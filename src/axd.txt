@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo Survival - Rangos Premium</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2d5a87, #4a7c59);
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid #4ecdc4;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .nav-link:hover::before {
+            left: 100%;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: rgba(78, 205, 196, 0.2);
+            color: #4ecdc4;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.3);
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .mobile-menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+        
+        .mobile-menu-open .mobile-menu-toggle span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .mobile-menu-open .mobile-menu-toggle span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .mobile-menu-open .mobile-menu-toggle span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
+        .logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(78, 205, 196, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { filter: brightness(1); }
+            to { filter: brightness(1.2); }
+        }
+        
+        .server-info {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            background: radial-gradient(circle at center, rgba(78, 205, 196, 0.2), transparent);
+        }
+        
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(78, 205, 196, 0.8);
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        .compatibility {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .platform {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 25px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            border: 2px solid #4ecdc4;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .platform:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(78, 205, 196, 0.4);
+        }
+        
+        .ranks-section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.8em;
+            margin-bottom: 50px;
+            color: #4ecdc4;
+            text-shadow: 0 0 15px rgba(78, 205, 196, 0.6);
+        }
+        
+        .ranks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .rank-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(15px);
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .rank-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .rank-card:hover::before {
+            opacity: 1;
+        }
+        
+        .rank-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .rank-ultra {
+            border-color: #3498db;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.2), rgba(255, 255, 255, 0.1));
+        }
+        
+        .rank-hero {
+            border-color: #e67e22;
+            background: linear-gradient(135deg, rgba(230, 126, 34, 0.2), rgba(255, 255, 255, 0.1));
+        }
+        
+        .rank-legend {
+            border-color: #27ae60;
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.2), rgba(255, 255, 255, 0.1));
+        }
+        
+        .rank-youtube {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.2), rgba(255, 255, 255, 0.1));
+            position: relative;
+        }
+        
+        .youtube-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #e74c3c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            transform: rotate(15deg);
+        }
+        
+        .rank-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .rank-name {
+            font-size: 2.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px currentColor;
+        }
+        
+        .rank-price {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .rank-ultra .rank-name { color: #3498db; }
+        .rank-hero .rank-name { color: #e67e22; }
+        .rank-legend .rank-name { color: #27ae60; }
+        .rank-youtube .rank-name { color: #e74c3c; }
+        
+        .commands, .benefits {
+            margin: 20px 0;
+        }
+        
+        .commands h4, .benefits h4 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #4ecdc4;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .command-list, .benefit-list {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .command-item, .benefit-item {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+        
+        .command-item:last-child, .benefit-item:last-child {
+            border-bottom: none;
+        }
+        
+        .command-name {
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+        
+        .buy-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
+        }
+        
+        .buy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.6);
+            background: linear-gradient(45deg, #44a08d, #4ecdc4);
+        }
+        
+        .buy-button:disabled {
+            background: #7f8c8d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .features-section {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 60px 0;
+            margin: 50px 0;
+            border-radius: 20px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+        }
+        
+        footer {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            
+            .ranks-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .compatibility {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(0, 0, 0, 0.95);
+                flex-direction: column;
+                padding: 20px;
+                gap: 10px;
+                border-radius: 0 0 15px 15px;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            
+            .info-grid, .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .info-section, .help-section, .contact-section {
+            padding: 80px 0;
+            margin: 50px 0;
+        }
+        
+        .info-grid, .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .info-card, .contact-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(78, 205, 196, 0.3);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .info-card:hover, .contact-card:hover {
+            transform: translateY(-5px);
+            border-color: #4ecdc4;
+            box-shadow: 0 10px 25px rgba(78, 205, 196, 0.3);
+        }
+        
+        .info-icon, .contact-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+        }
+        
+        .info-content {
+            text-align: left;
+        }
+        
+        .info-content p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background: rgba(78, 205, 196, 0.1);
+        }
+        
+        .faq-question h3 {
+            margin: 0;
+            color: #4ecdc4;
+        }
+        
+        .faq-toggle {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4ecdc4;
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 20px;
+            max-height: 500px;
+        }
+        
+        .faq-answer p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        
+        .faq-answer code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #4ecdc4;
+        }
+        
+        .contact-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .contact-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
+        }
+        
+        .server-status {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            font-size: 1.2em;
+        }
+        
+        .status-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-dot.online {
+            background: #27ae60;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(39, 174, 96, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0); }
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: #4ecdc4;
+            border-radius: 50%;
+            animation: float-particle 6s infinite linear;
+        }
+        
+        @keyframes float-particle {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">🏰 MUNDO SURVIVAL</div>
+                <nav class="main-nav">
+                    <ul class="nav-menu">
+                        <li><a href="#inicio" class="nav-link active">🏠 Inicio</a></li>
+                        <li><a href="#rangos" class="nav-link">💎 Rangos</a></li>
+                        <li><a href="#informacion" class="nav-link">📋 Información</a></li>
+                        <li><a href="#ayuda" class="nav-link">❓ Ayuda</a></li>
+                        <li><a href="#contacto" class="nav-link">📞 Contacto</a></li>
+                    </ul>
+                    <div class="mobile-menu-toggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </nav>
+                <div class="server-info">
+                    <div><strong>🎮 Compatible:</strong> Java & Bedrock</div>
+                    <div><strong>🌍 Modalidad:</strong> Survival con Economía</div>
+                    <div><strong>🛡️ Protección:</strong> Piedras Protectoras</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <section id="inicio" class="hero">
+        <div class="container">
+            <h1>🌟 RANGOS PREMIUM 🌟</h1>
+            <p>Mejora tu experiencia en Mundo Survival con rangos exclusivos</p>
+            
+            <div class="compatibility">
+                <div class="platform">
+                    <strong>☕ JAVA EDITION</strong>
+                    <div style="font-size: 0.9em; margin-top: 5px;">Versión: 1.21.1</div>
+                </div>
+                <div class="platform">
+                    <strong>📱 BEDROCK EDITION</strong>
+                    <div style="font-size: 0.9em; margin-top: 5px;">Versión: 1.21.6</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="informacion" class="info-section">
+        <div class="container">
+            <h2 class="section-title">📋 INFORMACIÓN DEL SERVIDOR</h2>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">🎮</div>
+                    <h3>Compatibilidad</h3>
+                    <div class="info-content">
+                        <p><strong>Java Edition:</strong> Versión 1.21.1</p>
+                        <p><strong>Bedrock Edition:</strong> Versión 1.21.6</p>
+                        <p>Juego cruzado completo entre plataformas</p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">🌍</div>
+                    <h3>Modalidad de Juego</h3>
+                    <div class="info-content">
+                        <p><strong>Tipo:</strong> Survival puro</p>
+                        <p><strong>Dificultad:</strong> Normal/Hard</p>
+                        <p><strong>PvP:</strong> Zonas específicas</p>
+                        <p><strong>Griefing:</strong> Prohibido</p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">💰</div>
+                    <h3>Sistema Económico</h3>
+                    <div class="info-content">
+                        <p><strong>Moneda:</strong> Coins del servidor</p>
+                        <p><strong>Tiendas:</strong> Administrador y jugadores</p>
+                        <p><strong>Trabajos:</strong> Múltiples profesiones</p>
+                        <p><strong>Subastas:</strong> Sistema de intercambio</p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">🛡️</div>
+                    <h3>Sistema de Protección</h3>
+                    <div class="info-content">
+                        <p><strong>Método:</strong> Piedras protectoras</p>
+                        <p><strong>Automático:</strong> Protección al colocar cofres</p>
+                        <p><strong>Expandible:</strong> Con herramientas especiales</p>
+                        <p><strong>Confianza:</strong> Sistema de permisos</p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">🏠</div>
+                    <h3>Funciones Básicas</h3>
+                    <div class="info-content">
+                        <p><strong>Homes:</strong> Teleporte a tu casa</p>
+                        <p><strong>Warps:</strong> Zonas públicas</p>
+                        <p><strong>Spawn:</strong> Zona de inicio segura</p>
+                        <p><strong>Backpack:</strong> Inventario extra</p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">👥</div>
+                    <h3>Comunidad</h3>
+                    <div class="info-content">
+                        <p><strong>Clanes:</strong> Sistema de grupos</p>
+                        <p><strong>Chat:</strong> Canales múltiples</p>
+                        <p><strong>Eventos:</strong> Competencias regulares</p>
+                        <p><strong>Staff:</strong> Soporte 24/7</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="ayuda" class="help-section">
+        <div class="container">
+            <h2 class="section-title">❓ AYUDA Y PREGUNTAS FRECUENTES</h2>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>🎮 ¿Cómo me conecto al servidor?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>Java Edition:</strong> Agrega la IP del servidor en tu lista de servidores multijugador.</p>
+                        <p><strong>Bedrock Edition:</strong> Ve a "Servidores" y agrega la IP y puerto correspondiente.</p>
+                        <p><strong>IP:</strong> Contacta con el staff para obtener la IP actual del servidor.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>💎 ¿Cómo activo mi rango después de comprarlo?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>1. Completa tu compra a través del método de pago</p>
+                        <p>2. Proporciona tu nombre de usuario de Minecraft</p>
+                        <p>3. El staff activará tu rango en un máximo de 24 horas</p>
+                        <p>4. Reconéctate al servidor para que los cambios surtan efecto</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>🛡️ ¿Cómo funciona el sistema de protección?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>• Al colocar tu primer cofre, se crea automáticamente una zona protegida</p>
+                        <p>• Usa una pala dorada para expandir tu área de protección</p>
+                        <p>• Comando <code>/trust [jugador]</code> para dar permisos a otros</p>
+                        <p>• Comando <code>/untrust [jugador]</code> para quitar permisos</p>
+                        <p>• Los rangos premium tienen más piedras de protección disponibles</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>💰 ¿Cómo funciona la economía del servidor?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>• Gana dinero trabajando: minería, agricultura, construcción, etc.</p>
+                        <p>• Vende items en el mercado con <code>/market</code></p>
+                        <p>• Crea tu propia tienda con <code>/shop create</code></p>
+                        <p>• Participa en eventos del servidor para premios especiales</p>
+                        <p>• Usa <code>/balance</code> para ver tu dinero actual</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>🏠 ¿Cómo establezco mi casa?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>• Comando <code>/sethome [nombre]</code> para crear un punto de teleporte</p>
+                        <p>• Comando <code>/home [nombre]</code> para teleportarte</p>
+                        <p>• Comando <code>/homes</code> para ver todos tus homes</p>
+                        <p>• Comando <code>/delhome [nombre]</code> para eliminar un home</p>
+                        <p>• Los usuarios básicos tienen 3 homes, los rangos premium tienen más</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>🎯 ¿Puedo cambiar de rango más adelante?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>• Sí, puedes hacer upgrade a un rango superior pagando la diferencia</p>
+                        <p>• Contacta con un administrador para procesar el upgrade</p>
+                        <p>• Mantienes todos los beneficios del rango anterior</p>
+                        <p>• No es posible hacer downgrade a un rango inferior</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="contacto" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">📞 CONTACTO</h2>
+            
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">💬</div>
+                    <h3>Discord</h3>
+                    <p>Únete a nuestra comunidad oficial</p>
+                    <a href="#" class="contact-button">discord.gg/mundosurvival</a>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">📧</div>
+                    <h3>Email</h3>
+                    <p>Para soporte técnico y consultas</p>
+                    <a href="mailto:admin@mundosurvival.com" class="contact-button">admin@mundosurvival.com</a>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">🎮</div>
+                    <h3>En el Servidor</h3>
+                    <p>Contacta directamente con el staff</p>
+                    <div class="contact-button">Usa /ticket o /staff</div>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">⏰</div>
+                    <h3>Horarios de Atención</h3>
+                    <p>Soporte disponible</p>
+                    <div class="contact-button">24/7 Online</div>
+                </div>
+            </div>
+            
+            <div class="server-status">
+                <h3>🌐 ESTADO DEL SERVIDOR</h3>
+                <div class="status-indicator">
+                    <div class="status-dot online"></div>
+                    <span>Servidor Online - 24/7</span>
+                </div>
+                <div class="server-details">
+                    <p><strong>Uptime:</strong> 99.9% | <strong>Jugadores:</strong> Consultar en Discord</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="features-section">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Economía Avanzada</h3>
+                    <p>Sistema económico completo con tiendas, comercio y mercados</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Protección Total</h3>
+                    <p>Piedras protectoras para mantener tus construcciones seguras</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Mundo Persistente</h3>
+                    <p>Tu progreso se mantiene seguro en nuestros servidores 24/7</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="rangos" class="ranks-section">
+        <div class="container">
+            <h2 class="section-title">💎 RANGOS DISPONIBLES 💎</h2>
+            
+            <div class="ranks-grid">
+                <!-- Ultra Rank -->
+                <div class="rank-card rank-ultra">
+                    <div class="rank-header">
+                        <div class="rank-name">⚡ ULTRA</div>
+                        <div class="rank-price">$3 USD</div>
+                    </div>
+                    
+                    <div class="commands">
+                        <h4>🎮 Comandos:</h4>
+                        <div class="command-list">
+                            <div class="command-item"><span class="command-name">/fly</span> - Vuela por todo el mundo</div>
+                            <div class="command-item"><span class="command-name">/feed</span> - Rellena tu hambre cuando quieras</div>
+                            <div class="command-item"><span class="command-name">/hat</span> - Ponte cualquier bloque en tu cabeza</div>
+                            <div class="command-item"><span class="command-name">/nick</span> - Cambia tu nombre con colores</div>
+                            <div class="command-item"><span class="command-name">/enderchest</span> - Enderchest portátil</div>
+                        </div>
+                    </div>
+                    
+                    <div class="benefits">
+                        <h4>🌟 Beneficios:</h4>
+                        <div class="benefit-list">
+                            <div class="benefit-item">• No perder XP al morir</div>
+                            <div class="benefit-item">• 5 sethomes (vs 3 normales)</div>
+                            <div class="benefit-item">• 8 piedras de protección (vs 6 normales)</div>
+                            <div class="benefit-item">• Mascota Enderman exclusiva</div>
+                            <div class="benefit-item">• Kit Ultra especial</div>
+                        </div>
+                    </div>
+                    
+                    <button class="buy-button" onclick="buyRank('ultra')">Comprar Ultra - $3 USD</button>
+                </div>
+                
+                <!-- Hero Rank -->
+                <div class="rank-card rank-hero">
+                    <div class="rank-header">
+                        <div class="rank-name">🦸 HÉROE</div>
+                        <div class="rank-price">$4 USD</div>
+                    </div>
+                    
+                    <div class="commands">
+                        <h4>🎮 Comandos:</h4>
+                        <div class="command-list">
+                            <div class="command-item"><span class="command-name">/fly</span> - Vuela por todo el mundo</div>
+                            <div class="command-item"><span class="command-name">/feed</span> - Rellena tu hambre cuando quieras</div>
+                            <div class="command-item"><span class="command-name">/hat</span> - Ponte cualquier bloque en tu cabeza</div>
+                            <div class="command-item"><span class="command-name">/nick</span> - Cambia tu nombre con colores</div>
+                            <div class="command-item"><span class="command-name">/enderchest</span> - Enderchest portátil</div>
+                            <div class="command-item"><span class="command-name">/anvil</span> - Yunque portátil sin límites</div>
+                            <div class="command-item"><span class="command-name">/time set</span> - Modifica día y noche</div>
+                            <div class="command-item"><span class="command-name">/weather</span> - Controla el clima</div>
+                        </div>
+                    </div>
+                    
+                    <div class="benefits">
+                        <h4>🌟 Beneficios:</h4>
+                        <div class="benefit-list">
+                            <div class="benefit-item">• No perder XP al morir</div>
+                            <div class="benefit-item">• 7 sethomes (vs 3 normales)</div>
+                            <div class="benefit-item">• 10 piedras de protección (vs 6 normales)</div>
+                            <div class="benefit-item">• Mascotas: Enderman + Gólem de Hierro</div>
+                            <div class="benefit-item">• Kit Héroe especial</div>
+                        </div>
+                    </div>
+                    
+                    <button class="buy-button" onclick="buyRank('hero')">Comprar Héroe - $4 USD</button>
+                </div>
+                
+                <!-- Legend Rank -->
+                <div class="rank-card rank-legend">
+                    <div class="rank-header">
+                        <div class="rank-name">👑 LEGENDA</div>
+                        <div class="rank-price">$5 USD</div>
+                    </div>
+                    
+                    <div class="commands">
+                        <h4>🎮 Comandos:</h4>
+                        <div class="command-list">
+                            <div class="command-item"><span class="command-name">/fly</span> - Vuela por todo el mundo</div>
+                            <div class="command-item"><span class="command-name">/feed</span> - Rellena tu hambre cuando quieras</div>
+                            <div class="command-item"><span class="command-name">/hat</span> - Ponte cualquier bloque en tu cabeza</div>
+                            <div class="command-item"><span class="command-name">/nick</span> - Cambia tu nombre con colores</div>
+                            <div class="command-item"><span class="command-name">/enderchest</span> - Enderchest portátil</div>
+                            <div class="command-item"><span class="command-name">/anvil</span> - Yunque portátil sin límites</div>
+                            <div class="command-item"><span class="command-name">/time set</span> - Modifica día y noche</div>
+                            <div class="command-item"><span class="command-name">/weather</span> - Controla el clima</div>
+                            <div class="command-item"><span class="command-name">/repair</span> - Repara ítems sin costo de XP</div>
+                            <div class="command-item"><span class="command-name">/me</span> - Habla más distinguido</div>
+                        </div>
+                    </div>
+                    
+                    <div class="benefits">
+                        <h4>🌟 Beneficios:</h4>
+                        <div class="benefit-list">
+                            <div class="benefit-item">• No perder XP al morir</div>
+                            <div class="benefit-item">• 9 sethomes (vs 3 normales)</div>
+                            <div class="benefit-item">• 12 piedras de protección (vs 6 normales)</div>
+                            <div class="benefit-item">• Mascotas: Enderman + Gólem + Wither</div>
+                            <div class="benefit-item">• Kit Legenda exclusivo</div>
+                        </div>
+                    </div>
+                    
+                    <button class="buy-button" onclick="buyRank('legend')">Comprar Legenda - $5 USD</button>
+                </div>
+                
+                <!-- YouTube Rank -->
+                <div class="rank-card rank-youtube">
+                    <div class="youtube-badge">EXCLUSIVO</div>
+                    <div class="rank-header">
+                        <div class="rank-name">📺 YOUTUBE</div>
+                        <div class="rank-price">NO DISPONIBLE</div>
+                    </div>
+                    
+                    <div class="commands">
+                        <h4>🎮 Rango Especial:</h4>
+                        <div class="command-list">
+                            <div class="command-item">🎥 Exclusivo para YouTubers y Streamers</div>
+                            <div class="command-item">🌟 Beneficios únicos y personalizados</div>
+                            <div class="command-item">🎊 Acceso a eventos especiales</div>
+                            <div class="command-item">🎭 Comandos de entretenimiento exclusivos</div>
+                        </div>
+                    </div>
+                    
+                    <div class="benefits">
+                        <h4>🌟 Características:</h4>
+                        <div class="benefit-list">
+                            <div class="benefit-item">• Solo por invitación del staff</div>
+                            <div class="benefit-item">• Todos los beneficios de Legenda +</div>
+                            <div class="benefit-item">• Herramientas de creación de contenido</div>
+                            <div class="benefit-item">• Soporte prioritario 24/7</div>
+                        </div>
+                    </div>
+                    
+                    <button class="buy-button" disabled>Rango por Invitación</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Mundo Survival - El mejor servidor de supervivencia</p>
+            <p>Compatible con Java Edition y Bedrock Edition</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.width = Math.random() * 6 + 2 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            particle.style.animationDelay = Math.random() * 2 + 's';
+            
+            document.getElementById('particles').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 8000);
+        }
+        
+        // Create particles periodically
+        setInterval(createParticle, 300);
+        
+        // Buy rank function
+        function buyRank(rankType) {
+            const ranks = {
+                ultra: { name: 'Ultra', price: '$3 USD' },
+                hero: { name: 'Héroe', price: '$4 USD' },
+                legend: { name: 'Legenda', price: '$5 USD' }
+            };
+            
+            const rank = ranks[rankType];
+            if (rank) {
+                alert(`¡Gracias por tu interés en el rango ${rank.name}!\n\nPrecio: ${rank.price}\n\nPara completar tu compra, contacta con un administrador del servidor o visita nuestra tienda oficial.`);
+            }
+        }
+        
+        // Mobile menu functionality
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        const body = document.body;
+        
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            body.classList.toggle('mobile-menu-open');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                body.classList.remove('mobile-menu-open');
+                
+                // Update active link
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+        
+        // FAQ functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+        
+        // Smooth scrolling navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Active navigation on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        const updateActiveNav = () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', updateActiveNav);
+        
+        // Add scroll effect to cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.style.opacity = '1';
+                }
+            });
+        }, observerOptions);
+        
+        // Initially hide cards for animation
+        document.querySelectorAll('.rank-card, .feature-card').forEach(card => {
+            card.style.transform = 'translateY(50px)';
+            card.style.opacity = '0';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
